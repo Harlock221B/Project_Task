@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity} from 'react-native';
+import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import database from '../../config/firebaseconfig';
 import styles from './styles';
 
 export default function NewTask({ navigation }) {
     const [description, setDescription] = useState(null);
 
-    function addTask(){
-        database.ref('tasks').push({
+    function addTask() {
+        database.collection("Banco").add({
             description: description,
             status: false
         });
@@ -15,10 +15,21 @@ export default function NewTask({ navigation }) {
     }
 
     return (
-        <View>
-            <Text>
-                New Task
+        <View style={styles.container} >
+            <Text style={styles.label}>
+                Descriçao
             </Text>
+            <TextInput style={styles.input}
+                placeholder="Digite a descriçao da tarefa"
+                onChangeText={
+                    (text) => setDescription(text)
+                }
+                value={description} />
+            <TouchableOpacity style={styles.buttonNewTask} onPress={() => { addTask() }}>
+                <Text style={styles.iconButton}>
+                    Salvar
+                </Text>
+            </TouchableOpacity >
         </View>
     );
 }
